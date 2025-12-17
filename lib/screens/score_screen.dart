@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quiz_app/data/globals.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 import 'package:quiz_app/screens/topics_screen.dart';
 import 'package:quiz_app/widgets/app_button.dart';
 
 class ScoreScreen extends StatelessWidget {
-  const ScoreScreen({super.key});
+  ScoreScreen({super.key, required this.score, required this.totalQuestions});
+
+  final int score;
+  final int totalQuestions;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +70,7 @@ class ScoreScreen extends StatelessWidget {
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '4/10',
+                            '$score/$totalQuestions',
                             style: TextStyle(
                               fontSize: 48,
                               fontWeight: FontWeight.bold,
@@ -88,8 +92,7 @@ class ScoreScreen extends StatelessWidget {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                TopicsScreen(userName: ''),
+                            builder: (BuildContext context) => TopicsScreen(),
                           ),
                           (route) => false,
                         );
@@ -102,6 +105,7 @@ class ScoreScreen extends StatelessWidget {
                     AppButton(
                       text: 'Exit & Logout',
                       onPressHandler: () {
+                        userNameController.clear();
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute<void>(

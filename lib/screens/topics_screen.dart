@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quiz_app/data/globals.dart';
+import 'package:quiz_app/data/quiz_app_data.dart';
 import 'package:quiz_app/screens/quiz_screen.dart';
 
 class TopicsScreen extends StatelessWidget {
-  TopicsScreen({super.key, required this.userName});
-
-  String userName;
+  TopicsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class TopicsScreen extends StatelessWidget {
                           Icon(Icons.person, size: 32),
                           Expanded(
                             child: Text(
-                              userName,
+                              userNameController.text,
                               style: TextStyle(fontSize: 14),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -64,46 +64,14 @@ class TopicsScreen extends StatelessWidget {
                 // passing parameters using constructor
 
                 // instance 1
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const QuizScreen(),
-                      ),
-                    );
-                  },
-                  child: TopicCard(
-                    title: "Science",
-                    description: "test your science knowledge",
-                    iconPath: "assets/science_icon.svg",
-                    colorHex: 0xFF4CAF50,
+                for (int i = 0; i < quizAppTopics.length; i++)
+                  TopicCard(
+                    title: quizAppTopics[i]['name'],
+                    description: quizAppTopics[i]['description'],
+                    iconPath: quizAppTopics[i]['iconPath'],
+                    colorHex: quizAppTopics[i]['color'],
+                    questions: quizAppTopics[i]['questions'],
                   ),
-                ),
-
-                // instance 2
-                TopicCard(
-                  title: "History",
-                  description: "test your history knowledge",
-                  iconPath: "assets/history_icon.svg",
-                  colorHex: 0xFFFFC107,
-                ),
-
-                // instance 3
-                TopicCard(
-                  title: "Sports",
-                  description: "test your sports knowledge",
-                  iconPath: "assets/sports_icon.svg",
-                  colorHex: 0xFFF44336,
-                ),
-
-                // instance 4
-                TopicCard(
-                  title: "Geography",
-                  description: "test your geography knowledge",
-                  iconPath: "assets/geography_icon.svg",
-                  colorHex: 0xFF2196F3,
-                ),
               ],
             ),
           ),
@@ -128,6 +96,7 @@ class TopicCard extends StatelessWidget {
     required this.description,
     required this.iconPath,
     required this.colorHex,
+    required this.questions,
   });
 
   // variables
@@ -135,52 +104,69 @@ class TopicCard extends StatelessWidget {
   String description;
   String iconPath;
   int colorHex;
+  List questions;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: Color(colorHex),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: SvgPicture.asset(iconPath),
-          ),
-
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                Text(
-                  description,
-                  style: TextStyle(color: Color(0xFF666666)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => QuizScreen(
+              title: title,
+              description: description,
+              iconPath: iconPath,
+              colorHex: colorHex,
+              questions: questions,
             ),
           ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
 
-          Icon((Icons.arrow_forward_ios)),
-        ],
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: Color(colorHex),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: SvgPicture.asset(iconPath),
+            ),
+
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Text(
+                    description,
+                    style: TextStyle(color: Color(0xFF666666)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            Icon((Icons.arrow_forward_ios)),
+          ],
+        ),
       ),
     );
   }

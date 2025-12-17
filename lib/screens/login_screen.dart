@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/data/globals.dart';
 import 'package:quiz_app/screens/topics_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
-  var userNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -81,8 +81,7 @@ class LoginScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                TopicsScreen(userName: userNameController.text),
+                            builder: (BuildContext context) => TopicsScreen(),
                           ),
                         );
                       }
